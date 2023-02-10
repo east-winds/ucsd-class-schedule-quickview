@@ -2,7 +2,13 @@
 
 FN="$(basename ${0} .sh)"
 NAME=$1
-TERMS="FA21
+TERMS="SP23
+WI23
+FA22
+SA22
+SP22
+WI22
+FA21
 SA21
 SP21
 WI21
