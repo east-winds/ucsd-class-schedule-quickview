@@ -2,29 +2,13 @@
 
 FN="$(basename ${0} .sh)"
 NAME=$1
-TERMS="SP23
-WI23
-FA22
-SA22
-SP22
-WI22
-FA21
-SA21
-SP21
-WI21
-FA20
-SA20
-SP20
-WI20
-FA19
-SA19
-SP19
-WI19
-FA18
-SA18
-SP18
-WI18
-FA17"
+if [ -z "$2" ]
+	then
+		NO_YRS=3
+	else
+		NO_YRS=$2
+fi
+TERMS=$(./retrieve_terms.sh $NO_YRS)
 
 rm ${FN}.html
 

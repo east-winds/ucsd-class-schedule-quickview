@@ -1,6 +1,6 @@
 # UCSD Class Schedule Quickview
 
-The [UCSD Schedule of Classes](https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudent.htm) is somewhat difficult to navigate. This repo allows you to quickly view UCSD course offered in previous 10+ terms by professor or course name.
+The [UCSD Schedule of Classes](https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudent.htm) is somewhat difficult to navigate. This repo allows you to quickly view UCSD course offered in next and previous X years by professor or course name.
 
 Example usage (only tested for bash terminal):
 
@@ -8,4 +8,7 @@ Example usage (only tested for bash terminal):
 ./quickview_coursename.sh "GPPS 428"
 
 ./quickview_prof.sh "Davidson, Michael"
+
+# Get last four years plus current year of results:
+./quickview_prof.sh "Davidson, Michael" 4  
 ```
