@@ -1,6 +1,6 @@
 # UCSD Class Schedule Quickview
 
-The [UCSD Schedule of Classes](https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudent.htm) is somewhat difficult to navigate. This repo allows you to quickly view UCSD course offered in next and previous X years by professor or course name.
+The [UCSD Schedule of Classes](https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudent.htm) is somewhat difficult to navigate. This repo allows you to quickly view UCSD course offered in current and previous X years by professor or course name.
 
 Example usage (only tested for bash terminal):
 
