@@ -12,11 +12,26 @@ Example professor search: https://ucsd-classes.mrdavidson.workers.dev/api/search
 
 Example course search: https://ucsd-classes.mrdavidson.workers.dev/api/search?mode=course&q=GPPS%20428&years=3
 
-Relevant links:
+### What you see
+
+The site uses a white-on-black design.
+
+- **Search page:** a single form. Enter a professor (`Last, First`) or a course (`GPPS 428`), choose Professor or Course, and set how many years back to search. Example links and a link to this repository are underneath.
+- **Results page:** one section per quarter, newest first, with a "Found in N of M quarters" summary at the top.
+  - A quarter with classes shows only UCSD's results table: course, section, meeting type, days, time, room, instructor and seats. UCSD's "Your search was" box, navigation bars and site footer are removed.
+  - A quarter with no classes shows only "No results found." in gray, so it's easy to skip past.
+  - Links in the table (section IDs, buildings, prerequisites, evaluations, instructor email) open on UCSD's site.
+
+![Search page](docs/search-page.png)
+
+![Results page](docs/results-page.png)
+
+### Endpoints
+
 - `/` — search page
 - `/api/search?mode=prof&q=Davidson,%20Michael&years=3`
 - `/api/search?mode=course&q=GPPS%20428&years=3`
-- Add `&format=json` for JSON output.
+- Add `&format=json` for JSON output. Each quarter includes `found: true/false` and the cleaned HTML.
 - `/healthz` — simple health endpoint
 
 
@@ -26,6 +41,8 @@ Relevant files:
 - `quickview_prof.sh`
 - `quickview_coursename.sh`
 - `extract_results.sh` (shared helper: keeps only each quarter's results table, or prints "No results found.")
+
+The scripts write `quickview_prof.html` or `quickview_coursename.html` in the same white-on-black style as the website, then open it in your browser.
 
 Example usage (only tested for `bash` terminal):
 
@@ -67,7 +84,7 @@ Pushes to `main` deploy automatically through [Cloudflare Workers Builds](https:
    - Root directory: `/`
 3. The Worker name in the dashboard must match `name` in `wrangler.jsonc` (`ucsd-classes`).
 
-Optional: enable builds for non-production branches (deploy command `npx wrangler versions upload`) to get a preview URL per branch.
+Builds for non-production branches are currently turned off, so pull requests don't get a Cloudflare check. To turn them back on, set the non-production branch deploy command to `npx wrangler versions upload`. Don't use `npx wrangler preview`: that command doesn't exist in Wrangler 4 and fails the build.
 
 Manual fallback:
 
