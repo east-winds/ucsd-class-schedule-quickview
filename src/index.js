@@ -1,3 +1,5 @@
+import { extractRelevantMarkup } from './extract.js';
+
 const SEARCH_ENDPOINT = 'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFacultyResult.htm';
 const SEARCH_PAGE_REFERER = 'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFaculty.htm';
 
@@ -59,11 +61,15 @@ async function handleSearch(url) {
     });
 
     const responseHtml = await response.text();
+    const { found, html: resultHtml } = response.ok
+      ? extractRelevantMarkup(responseHtml)
+      : { found: false, html: `<p class="no-results">Upstream request failed with status ${response.status}.</p>` };
     results.push({
       term,
       ok: response.ok,
       status: response.status,
-      body: extractRelevantMarkup(responseHtml),
+      found,
+      body: resultHtml,
     });
   }
 
@@ -189,17 +195,6 @@ function pad2(n) {
   return String(n).padStart(2, '0');
 }
 
-function extractRelevantMarkup(sourceHtml) {
-  if (!sourceHtml) return '<p>No response body returned.</p>';
-
-  const marker = /<h1[^>]*>\s*Schedule of Classes\s*<\/h1>/i;
-  const cleaned = sourceHtml.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
-  const split = cleaned.split(marker);
-  const body = split.length > 1 ? split.slice(1).join('') : cleaned;
-
-  return body.trim() || '<p>No matching content returned.</p>';
-}
-
 function renderHomePage(url) {
   const exampleProf = `${url.origin}/api/search?mode=prof&q=Davidson%2C%20Michael&years=3`;
   const exampleCourse = `${url.origin}/api/search?mode=course&q=GPPS%20428&years=3`;
@@ -246,6 +241,7 @@ function renderHomePage(url) {
 
 function renderResultsPage({ mode, q, years, terms, results }) {
   const safeQ = escapeHtml(q);
+  const foundCount = results.filter((r) => r.found).length;
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -258,14 +254,24 @@ function renderResultsPage({ mode, q, years, terms, results }) {
     .muted { color: #555; }
     .term { margin: 1.75rem 0; border-top: 1px solid #ddd; padding-top: 1rem; }
     .term h2 { margin: 0 0 0.75rem; }
-    table { border-collapse: collapse; }
-    th, td { padding: 0.35rem 0.5rem; border: 1px solid #ddd; }
+    .no-results { color: #777; font-style: italic; margin: 0; }
+    .term:has(.no-results) h2 { color: #777; font-size: 1.1rem; }
+    /* Table styles carried over from the UCSD Schedule of Classes page. */
+    table.tbrdr { border: 1px solid #d0d0d0; border-collapse: collapse; }
+    table.tbrdr td { padding: 0.3rem 0.45rem; vertical-align: top; }
+    td.ubrdr { border-top: 1px solid #d0d0d0; font-weight: 600; background: #f6f6f6; }
+    td.brdr { border-bottom: 1px solid #d0d0d0; }
+    td.crsheader { background: #eef3f8; border-top: 1px solid #d0d0d0; }
+    table.tbrdr h2 { font-size: 1.05rem; margin: 0.25rem 0; }
+    .boldtxt, .bold_text { font-weight: 600; }
+    .icon.info { display: none; }
   </style>
 </head>
 <body>
   <div class="top">
     <h1>Results for ${safeQ}</h1>
     <p class="muted">Mode: ${escapeHtml(mode)} · Years back: ${years} · Terms searched: ${terms.map(escapeHtml).join(', ')}</p>
+    <p>Found in ${foundCount} of ${results.length} quarters.</p>
     <p><a href="/">New search</a></p>
   </div>
   ${results
@@ -273,10 +279,16 @@ function renderResultsPage({ mode, q, years, terms, results }) {
       (result) => `
       <section class="term">
         <h2>${escapeHtml(result.term)}</h2>
-        ${result.ok ? result.body : `<p>Upstream request failed with status ${result.status}.</p>`}
+        ${result.body}
       </section>`,
     )
     .join('\n')}
+  <script>
+    // Helpers referenced by onclick/href attributes in the UCSD result tables.
+    function openNewWindow(url) { window.open(url, '_blank', 'noopener'); }
+    function openNewTab(url) { window.open(url, '_blank', 'noopener'); }
+    function sendMail(url) { window.open(url, '_blank', 'noopener'); }
+  </script>
 </body>
 </html>`;
 }
