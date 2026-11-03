@@ -16,13 +16,16 @@ cat > ${FN}.html <<'HTML'
 <meta charset="utf-8">
 <base href="https://act.ucsd.edu/">
 <style>
+html, body { background: #000; color: #fff; color-scheme: dark; }
 body { font-family: system-ui, sans-serif; max-width: 1100px; margin: 1.5rem auto; padding: 0 1rem; }
-.no-results { color: #777; font-style: italic; }
-table.tbrdr { border: 1px solid #d0d0d0; border-collapse: collapse; }
+a { color: #8ab4ff; }
+a:visited { color: #c4a1ff; }
+.no-results { color: #a3a3a3; font-style: italic; }
+table.tbrdr { border: 1px solid #333; border-collapse: collapse; }
 table.tbrdr td { padding: 0.3rem 0.45rem; vertical-align: top; }
-td.ubrdr { border-top: 1px solid #d0d0d0; font-weight: 600; background: #f6f6f6; }
-td.brdr { border-bottom: 1px solid #d0d0d0; }
-td.crsheader { background: #eef3f8; border-top: 1px solid #d0d0d0; }
+td.ubrdr { border-top: 1px solid #333; font-weight: 600; background: #111; }
+td.brdr { border-bottom: 1px solid #333; }
+td.crsheader { background: #1a1a1a; border-top: 1px solid #333; }
 .icon.info { display: none; }
 </style>
 HTML
