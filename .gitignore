@@ -1,4 +1,5 @@
 *.html
+!test/fixtures/*.html
 .DS_Store
 
 # dependencies

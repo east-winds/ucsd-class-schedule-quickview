@@ -25,6 +25,7 @@ Relevant links:
 Relevant files:
 - `quickview_prof.sh`
 - `quickview_coursename.sh`
+- `extract_results.sh` (shared helper: keeps only each quarter's results table, or prints "No results found.")
 
 Example usage (only tested for `bash` terminal):
 
@@ -46,7 +47,29 @@ npm install
 npm run dev
 ```
 
+### Tests
+
+```bash
+npm test
+```
+
+Tests run the result extractor (`src/extract.js`) against saved UCSD pages in `test/fixtures/`. If UCSD changes its page layout, save a fresh response there and update the extractor.
+
 ### Deploy
+
+Pushes to `main` deploy automatically through [Cloudflare Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/). One-time setup in the Cloudflare dashboard:
+
+1. Workers & Pages → `ucsd-classes` → Settings → Builds → **Connect**, and pick this GitHub repository.
+2. Build settings:
+   - Production branch: `main`
+   - Build command: `npm test`
+   - Deploy command: `npx wrangler deploy`
+   - Root directory: `/`
+3. The Worker name in the dashboard must match `name` in `wrangler.jsonc` (`ucsd-classes`).
+
+Optional: enable builds for non-production branches (deploy command `npx wrangler versions upload`) to get a preview URL per branch.
+
+Manual fallback:
 
 ```bash
 npm install

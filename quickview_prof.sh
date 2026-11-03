@@ -10,7 +10,24 @@ if [ -z "$2" ]
 fi
 TERMS=$(./retrieve_terms.sh $NO_YRS)
 
-rm ${FN}.html
+cat > ${FN}.html <<'HTML'
+<!doctype html>
+<meta charset="utf-8">
+<base href="https://act.ucsd.edu/">
+<style>
+html, body { background: #000; color: #fff; color-scheme: dark; }
+body { font-family: system-ui, sans-serif; max-width: 1100px; margin: 1.5rem auto; padding: 0 1rem; }
+a { color: #8ab4ff; }
+a:visited { color: #c4a1ff; }
+.no-results { color: #a3a3a3; font-style: italic; }
+table.tbrdr { border: 1px solid #333; border-collapse: collapse; }
+table.tbrdr td { padding: 0.3rem 0.45rem; vertical-align: top; }
+td.ubrdr { border-top: 1px solid #333; font-weight: 600; background: #111; }
+td.brdr { border-bottom: 1px solid #333; }
+td.crsheader { background: #1a1a1a; border-top: 1px solid #333; }
+.icon.info { display: none; }
+</style>
+HTML
 
 for i in $TERMS; do
 
@@ -18,8 +35,8 @@ for i in $TERMS; do
 
 	curl 'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFacultyResult.htm' -H 'Connection: keep-alive' -H 'Cache-Control: max-age=0' -H 'Origin: https://act.ucsd.edu' -H 'Upgrade-Insecure-Requests: 1' -H 'Content-Type: application/x-www-form-urlencoded' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Referer: https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFaculty.htm' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7' -H 'Cookie: _ga=GA1.2.58587174.1546203373; sto-id=EJLEBAKM; _fbp=fb.1.1550273286134.1622915849; __utmc=57960238; __utmz=57960238.1550614952.2.2.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); jlinkauthserver=cavouras; jlinksessionidx=z54a682ed275a521131d15b5f8e85b96a; _gid=GA1.2.1936778310.1550958211; __utma=57960238.58587174.1546203373.1550614952.1550958537.3; __utmt=1; __utmb=57960238.17.10.1550958537' --data "selectedTerm=${i}&tabNum=tabs-ins&_selectedSubjects=1&schedOption1=true&_schedOption1=on&_schedOption11=on&_schedOption12=on&schedOption2=true&_schedOption2=on&_schedOption4=on&_schedOption5=on&_schedOption3=on&_schedOption7=on&_schedOption8=on&_schedOption13=on&_schedOption10=on&_schedOption9=on&schDay=M&_schDay=on&schDay=T&_schDay=on&schDay=W&_schDay=on&schDay=R&_schDay=on&schDay=F&_schDay=on&schDay=S&_schDay=on&schStartTime=12%3A00&schStartAmPm=0&schEndTime=12%3A00&schEndAmPm=0&_selectedDepartments=1&schedOption1Dept=true&_schedOption1Dept=on&_schedOption11Dept=on&_schedOption12Dept=on&schedOption2Dept=true&_schedOption2Dept=on&_schedOption4Dept=on&_schedOption5Dept=on&_schedOption3Dept=on&_schedOption7Dept=on&_schedOption8Dept=on&_schedOption13Dept=on&_schedOption10Dept=on&_schedOption9Dept=on&schDayDept=M&_schDayDept=on&schDayDept=T&_schDayDept=on&schDayDept=W&_schDayDept=on&schDayDept=R&_schDayDept=on&schDayDept=F&_schDayDept=on&schDayDept=S&_schDayDept=on&schStartTimeDept=12%3A00&schStartAmPmDept=0&schEndTimeDept=12%3A00&schEndAmPmDept=0&courses=&sections=&instructorType=begin&instructor=${NAME}&titleType=contain&title=&_hideFullSec=on&_showPopup=on" --compressed > temp.html
 
-	sed -e "1,/<h1>Schedule of Classes<\/h1>/d" temp.html >> ${FN}.html
+	./extract_results.sh temp.html >> ${FN}.html
 done
 
-rm temp.html
-open ${FN}.html
+rm -f temp.html
+open ${FN}.html 2>/dev/null || xdg-open ${FN}.html 2>/dev/null || echo "Wrote ${FN}.html"

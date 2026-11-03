@@ -1,3 +1,5 @@
+import { extractRelevantMarkup } from './extract.js';
+
 const SEARCH_ENDPOINT = 'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFacultyResult.htm';
 const SEARCH_PAGE_REFERER = 'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFaculty.htm';
 
@@ -59,11 +61,15 @@ async function handleSearch(url) {
     });
 
     const responseHtml = await response.text();
+    const { found, html: resultHtml } = response.ok
+      ? extractRelevantMarkup(responseHtml)
+      : { found: false, html: `<p class="no-results">Upstream request failed with status ${response.status}.</p>` };
     results.push({
       term,
       ok: response.ok,
       status: response.status,
-      body: extractRelevantMarkup(responseHtml),
+      found,
+      body: resultHtml,
     });
   }
 
@@ -189,17 +195,6 @@ function pad2(n) {
   return String(n).padStart(2, '0');
 }
 
-function extractRelevantMarkup(sourceHtml) {
-  if (!sourceHtml) return '<p>No response body returned.</p>';
-
-  const marker = /<h1[^>]*>\s*Schedule of Classes\s*<\/h1>/i;
-  const cleaned = sourceHtml.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
-  const split = cleaned.split(marker);
-  const body = split.length > 1 ? split.slice(1).join('') : cleaned;
-
-  return body.trim() || '<p>No matching content returned.</p>';
-}
-
 function renderHomePage(url) {
   const exampleProf = `${url.origin}/api/search?mode=prof&q=Davidson%2C%20Michael&years=3`;
   const exampleCourse = `${url.origin}/api/search?mode=course&q=GPPS%20428&years=3`;
@@ -211,13 +206,22 @@ function renderHomePage(url) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>UCSD Class Schedule Quickview</title>
   <style>
+    :root { color-scheme: dark; --bg: #000; --fg: #fff; --muted: #a3a3a3; --line: #333; --panel: #111; --panel-2: #1a1a1a; --link: #8ab4ff; --link-visited: #c4a1ff; }
+    html, body { background: var(--bg); color: var(--fg); }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
     body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 900px; padding: 0 1rem; line-height: 1.5; }
     form { display: grid; gap: 0.75rem; margin: 1.5rem 0; }
-    input, select, button { font: inherit; padding: 0.65rem 0.8rem; }
+    input, select, button { font: inherit; padding: 0.65rem 0.8rem; border-radius: 4px; }
+    input, select { background: var(--bg); color: var(--fg); border: 1px solid #555; }
+    input::placeholder { color: #777; }
+    input:focus, select:focus, button:focus-visible { outline: 2px solid var(--fg); outline-offset: 1px; }
+    button { background: var(--fg); color: var(--bg); border: 1px solid var(--fg); font-weight: 600; cursor: pointer; }
+    button:hover { background: #d4d4d4; }
     .row { display: grid; grid-template-columns: 1fr 180px 160px; gap: 0.75rem; }
     @media (max-width: 700px) { .row { grid-template-columns: 1fr; } }
-    .muted { color: #555; }
-    code { background: #f4f4f4; padding: 0.1rem 0.3rem; border-radius: 4px; }
+    .muted { color: var(--muted); }
+    code { background: var(--panel-2); color: var(--fg); padding: 0.1rem 0.3rem; border-radius: 4px; }
   </style>
 </head>
 <body>
@@ -246,6 +250,7 @@ function renderHomePage(url) {
 
 function renderResultsPage({ mode, q, years, terms, results }) {
   const safeQ = escapeHtml(q);
+  const foundCount = results.filter((r) => r.found).length;
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -253,19 +258,33 @@ function renderResultsPage({ mode, q, years, terms, results }) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>UCSD Quickview Results</title>
   <style>
+    :root { color-scheme: dark; --bg: #000; --fg: #fff; --muted: #a3a3a3; --line: #333; --panel: #111; --panel-2: #1a1a1a; --link: #8ab4ff; --link-visited: #c4a1ff; }
+    html, body { background: var(--bg); color: var(--fg); }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
     body { font-family: system-ui, sans-serif; margin: 1.5rem auto; max-width: 1100px; padding: 0 1rem 4rem; line-height: 1.45; }
     .top { margin-bottom: 1.5rem; }
-    .muted { color: #555; }
-    .term { margin: 1.75rem 0; border-top: 1px solid #ddd; padding-top: 1rem; }
+    .muted { color: var(--muted); }
+    .term { margin: 1.75rem 0; border-top: 1px solid var(--line); padding-top: 1rem; }
     .term h2 { margin: 0 0 0.75rem; }
-    table { border-collapse: collapse; }
-    th, td { padding: 0.35rem 0.5rem; border: 1px solid #ddd; }
+    .no-results { color: var(--muted); font-style: italic; margin: 0; }
+    .term:has(.no-results) h2 { color: var(--muted); font-size: 1.1rem; }
+    /* Table layout from the UCSD Schedule of Classes page, recolored for a dark background. */
+    table.tbrdr { border: 1px solid var(--line); border-collapse: collapse; }
+    table.tbrdr td { padding: 0.3rem 0.45rem; vertical-align: top; }
+    td.ubrdr { border-top: 1px solid var(--line); font-weight: 600; background: var(--panel); }
+    td.brdr { border-bottom: 1px solid var(--line); }
+    td.crsheader { background: var(--panel-2); border-top: 1px solid var(--line); }
+    table.tbrdr h2 { font-size: 1.05rem; margin: 0.25rem 0; }
+    .boldtxt, .bold_text { font-weight: 600; }
+    .icon.info { display: none; }
   </style>
 </head>
 <body>
   <div class="top">
     <h1>Results for ${safeQ}</h1>
     <p class="muted">Mode: ${escapeHtml(mode)} · Years back: ${years} · Terms searched: ${terms.map(escapeHtml).join(', ')}</p>
+    <p>Found in ${foundCount} of ${results.length} quarters.</p>
     <p><a href="/">New search</a></p>
   </div>
   ${results
@@ -273,10 +292,16 @@ function renderResultsPage({ mode, q, years, terms, results }) {
       (result) => `
       <section class="term">
         <h2>${escapeHtml(result.term)}</h2>
-        ${result.ok ? result.body : `<p>Upstream request failed with status ${result.status}.</p>`}
+        ${result.body}
       </section>`,
     )
     .join('\n')}
+  <script>
+    // Helpers referenced by onclick/href attributes in the UCSD result tables.
+    function openNewWindow(url) { window.open(url, '_blank', 'noopener'); }
+    function openNewTab(url) { window.open(url, '_blank', 'noopener'); }
+    function sendMail(url) { window.open(url, '_blank', 'noopener'); }
+  </script>
 </body>
 </html>`;
 }
