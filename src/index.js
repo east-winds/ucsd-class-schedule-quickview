@@ -2,6 +2,7 @@ import { extractRelevantMarkup } from './extract.js';
 
 const SEARCH_ENDPOINT = 'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFacultyResult.htm';
 const SEARCH_PAGE_REFERER = 'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFaculty.htm';
+const REPO_URL = 'https://github.com/east-winds/ucsd-class-schedule-quickview';
 
 export default {
   async fetch(request) {
@@ -222,6 +223,7 @@ function renderHomePage(url) {
     @media (max-width: 700px) { .row { grid-template-columns: 1fr; } }
     .muted { color: var(--muted); }
     code { background: var(--panel-2); color: var(--fg); padding: 0.1rem 0.3rem; border-radius: 4px; }
+    .site-footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -244,6 +246,10 @@ function renderHomePage(url) {
   <p class="muted">JSON output: add <code>&format=json</code>.</p>
   <p class="muted">Example professor search: <a href="${escapeHtml(exampleProf)}">${escapeHtml(exampleProf)}</a></p>
   <p class="muted">Example course search: <a href="${escapeHtml(exampleCourse)}">${escapeHtml(exampleCourse)}</a></p>
+
+  <footer class="site-footer muted">
+    Source code on <a href="${REPO_URL}">GitHub</a>
+  </footer>
 </body>
 </html>`;
 }
