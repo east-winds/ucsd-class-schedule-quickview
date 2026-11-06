@@ -12,6 +12,15 @@ Example professor search: https://ucsd-classes.mrdavidson.workers.dev/api/search
 
 Example course search: https://ucsd-classes.mrdavidson.workers.dev/api/search?mode=course&q=GPPS%20428&years=3
 
+### Data sources
+
+UCSD's legacy [Schedule of Classes](https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudent.htm) no longer returns terms from Fall 2026 (FA26) on. The Worker picks a source for each quarter:
+
+- **FA26 and later:** [UCSD Class Planner](https://classplanner.apps.ucsd.edu/search), through its JSON search API (`POST /api/v1/public/catalog/courses/search`, falling back to `/api/v1/catalog/courses/search`). The Worker builds the results table itself, in the same style as the legacy one, with seat and waitlist counts. Each of these quarters shows a "Source: UCSD Class Planner" link.
+- **Summer 2026 and earlier:** the legacy Schedule of Classes on act.ucsd.edu, as before.
+
+Class Planner lists instructors by preferred name ("Michael Davidson", sometimes "Mike Davidson"). A professor search matches the full last name plus the first initial.
+
 ### What you see
 
 The site uses a white-on-black design.
@@ -41,6 +50,8 @@ Relevant files:
 - `quickview_prof.sh`
 - `quickview_coursename.sh`
 - `extract_results.sh` (shared helper: keeps only each quarter's results table, or prints "No results found.")
+
+These scripts only query the legacy act.ucsd.edu site, so they return nothing for FA26 and later. Use the website for upcoming quarters.
 
 The scripts write `quickview_prof.html` or `quickview_coursename.html` in the same white-on-black style as the website, then open it in your browser.
 
@@ -72,6 +83,8 @@ npm test
 
 Tests run the result extractor (`src/extract.js`) against saved UCSD pages in `test/fixtures/`. If UCSD changes its page layout, save a fresh response there and update the extractor.
 
+The Class Planner client (`src/classplanner.js`) and table renderer (`src/render-classplanner.js`) are tested against `test/fixtures/classplanner-search.json`. That file is a hand-built sample in the API's shape, not a captured response; replace it with a real response when you can.
+
 ### Deploy
 
 Pushes to `main` deploy automatically through [Cloudflare Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/). One-time setup in the Cloudflare dashboard:
@@ -95,4 +108,4 @@ npm run deploy
 
 ## Notes
 
-This app still depends on UCSD's upstream schedule page structure and form fields. If UCSD changes them, the Worker may need updates.
+This app still depends on UCSD's upstream schedule page structure and form fields, and on the Class Planner API's request and response format. If UCSD changes either, the Worker may need updates.

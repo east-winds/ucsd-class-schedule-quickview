@@ -1,0 +1,81 @@
+{
+  "_note": "Hand-built sample shaped like a Class Planner /courses/search response (field names from public projects that use the API). Not a captured response; replace with a real one when available.",
+  "term_code": "WI27",
+  "total": 2,
+  "offset": 0,
+  "limit": 48,
+  "courses": [
+    {
+      "term_code": "WI27",
+      "subject_code": "GPPS",
+      "course_code": "428",
+      "module_code": "GPPS-428",
+      "module_name": "Energy Systems & Policy",
+      "course_title": "Energy Systems & Policy",
+      "units_display": "4",
+      "instructors": ["Michael Davidson"],
+      "sections": [
+        {
+          "section_id": "E 00012345",
+          "section_ref": "GPPS428-A00",
+          "section_code": "A00",
+          "instruction_type_name": "Lecture",
+          "capacity": 60,
+          "enrolled": 55,
+          "seats_available": 5,
+          "waitlist_enrolled": 0,
+          "instructors": ["Michael Davidson"],
+          "meetings": [
+            { "meeting_kind": "class", "day_code": "T", "start_time_display": "9:30a", "end_time_display": "10:50a", "room_code": "RBC 3203", "is_remote": false, "is_tba": false },
+            { "meeting_kind": "class", "day_code": "R", "start_time_display": "9:30a", "end_time_display": "10:50a", "room_code": "RBC 3203", "is_remote": false, "is_tba": false },
+            { "meeting_kind": "final", "day_code": null, "specific_date": "2027-03-16", "start_time_display": "8:00a", "end_time_display": "10:59a", "room_code": "RBC 3203", "is_remote": false, "is_tba": false }
+          ]
+        },
+        {
+          "section_id": "E 00012346",
+          "section_ref": "GPPS428-A01",
+          "section_code": "A01",
+          "instruction_type_name": "Discussion",
+          "capacity": 30,
+          "enrolled": 30,
+          "seats_available": 0,
+          "waitlist_enrolled": 3,
+          "instructors": [],
+          "meetings": [
+            { "meeting_kind": "class", "day_code": "F", "start_time_display": "11:00a", "end_time_display": "11:50a", "room_code": "RBC 1301", "is_remote": false, "is_tba": false }
+          ]
+        }
+      ]
+    },
+    {
+      "term_code": "WI27",
+      "subject_code": "CSE",
+      "course_code": "008A",
+      "module_name": "Introduction to Programming",
+      "course_title": "Introduction to Programming <I>",
+      "instructors": ["Pat Davidsonn", "Leo Porter"],
+      "sections": [
+        {
+          "section_id": "E 00020001",
+          "section_ref": "CSE8A-A00",
+          "section_code": "A00",
+          "instruction_type_name": "Lecture",
+          "capacity": 200,
+          "seats_available": 10,
+          "instructors": ["Leo Porter"],
+          "meetings": []
+        },
+        {
+          "section_id": "E 00020002",
+          "section_ref": "CSE8A-B00",
+          "section_code": "B00",
+          "instruction_type_name": "Lecture",
+          "capacity": 200,
+          "seats_available": 0,
+          "instructors": ["Pat Davidsonn"],
+          "meetings": [{ "meeting_kind": "class", "is_tba": true, "is_remote": false }]
+        }
+      ]
+    }
+  ]
+}
