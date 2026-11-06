@@ -40,10 +40,15 @@ export function classPlannerTermUrl(term) {
 export function renderClassPlannerCourses(courses) {
   if (!courses.length) return { found: false, html: NO_RESULTS_HTML };
 
+  // The public API currently omits rooms; show the column only if some meeting has one.
+  const hasRooms = courses.some((c) => (c.sections || []).some((s) => (s.meetings || []).some((m) => m && roomText(m))));
+  const room = (text) => (hasRooms ? td(text) : '');
+  const headers = ['Course', 'Section', 'Type', 'Days', 'Time', ...(hasRooms ? ['Room'] : []), 'Instructor', 'Seats Available / Capacity', 'Waitlist'];
+
   const rows = [];
   rows.push(
     '<tr>' +
-      ['Course', 'Section', 'Type', 'Days', 'Time', 'Room', 'Instructor', 'Seats Available / Capacity', 'Waitlist']
+      headers
         .map((h) => `<td class="ubrdr">${h}</td>`)
         .join('') +
       '</tr>',
@@ -52,9 +57,11 @@ export function renderClassPlannerCourses(courses) {
   for (const course of courses) {
     const code = `${course.subject_code ?? ''} ${displayCourseNumber(course)}`.trim();
     const title = course.course_title || course.module_name || '';
-    const units = course.units_display ? ` (${course.units_display} Units)` : '';
+    const units = course.units_display
+      ? ` (${/unit/i.test(course.units_display) ? course.units_display : `${course.units_display} units`})`
+      : '';
     rows.push(
-      `<tr><td class="crsheader" colspan="9"><span class="boldtxt">${esc(code)}</span> ${esc(title)}${esc(units)}</td></tr>`,
+      `<tr><td class="crsheader" colspan="${headers.length}"><span class="boldtxt">${esc(code)}</span> ${esc(title)}${esc(units)}</td></tr>`,
     );
 
     for (const section of course.sections || []) {
@@ -67,7 +74,7 @@ export function renderClassPlannerCourses(courses) {
       const waitlist = Number.isFinite(section.waitlist_enrolled) ? String(section.waitlist_enrolled) : '';
       const sectionLabel = section.section_code || section.section_ref || section.section_id || '';
 
-      const first = weekly[0] || { days: 'TBA', time: 'TBA', room: 'TBA' };
+      const first = weekly[0] || { days: 'TBA', time: 'TBA', room: '' };
       rows.push(
         '<tr>' +
           td('') +
@@ -75,19 +82,19 @@ export function renderClassPlannerCourses(courses) {
           td(type) +
           td(first.days) +
           td(first.time) +
-          td(first.room) +
+          room(first.room) +
           td(instructors) +
           td(seats) +
           td(waitlist) +
           '</tr>',
       );
       for (const extra of weekly.slice(1)) {
-        rows.push('<tr>' + td('') + td('') + td(type) + td(extra.days) + td(extra.time) + td(extra.room) + td('') + td('') + td('') + '</tr>');
+        rows.push('<tr>' + td('') + td('') + td(type) + td(extra.days) + td(extra.time) + room(extra.room) + td('') + td('') + td('') + '</tr>');
       }
       for (const exam of exams) {
         const label = exam.specific_date ? `${examType(exam)} ${exam.specific_date}` : examType(exam);
         rows.push(
-          '<tr>' + td('') + td('') + td(label) + td(dayLetter(exam) || '') + td(timeText(exam)) + td(roomText(exam)) + td('') + td('') + td('') + '</tr>',
+          '<tr>' + td('') + td('') + td(label) + td(dayLetter(exam) || '') + td(timeText(exam)) + room(roomText(exam)) + td('') + td('') + td('') + '</tr>',
         );
       }
     }
@@ -130,11 +137,11 @@ function timeText(meeting) {
   return start || end || 'TBA';
 }
 
+// The public API omits rooms, so this is usually blank.
 function roomText(meeting) {
   if (meeting.is_remote) return 'Remote';
-  if (meeting.is_tba) return 'TBA';
   // room_code usually already includes the building ("GH 242").
-  return meeting.room_code || meeting.building_code || 'TBA';
+  return meeting.room_code || meeting.building_code || '';
 }
 
 // Merge same-time, same-room weekly meetings into one row ("TR 9:30a-10:50a").

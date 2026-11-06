@@ -1,81 +1,1188 @@
 {
-  "_note": "Hand-built sample shaped like a Class Planner /courses/search response (field names from public projects that use the API). Not a captured response; replace with a real one when available.",
-  "term_code": "WI27",
-  "total": 2,
-  "offset": 0,
-  "limit": 48,
-  "courses": [
+ "_note": "Captured from POST https://classplanner.apps.ucsd.edu/api/v1/public/catalog/courses/search (FA26, instructor filter \"Michael Davidson\" + \"Leo Porter\") on 2026-11-06, trimmed to a few courses.",
+ "term_code": "FA26",
+ "query": "",
+ "total": 4,
+ "offset": 0,
+ "limit": 48,
+ "courses": [
+  {
+   "term_code": "FA26",
+   "subject_code": "CSE",
+   "course_code": "008A",
+   "module_code": "CSE-008A",
+   "module_name": "Intro to Programming 1",
+   "course_title": null,
+   "subject_name": "Computer Science and Engineering",
+   "academic_level": "LD",
+   "section_count": 11,
+   "matching_section_count": 11,
+   "complete_package_count": 9,
+   "open_package_count": 9,
+   "waitlist_package_count": 0,
+   "open_section_count": 11,
+   "open_seat_count": 118,
+   "waitlist_available_count": 0,
+   "instruction_types": [
+    "discussion",
+    "lab",
+    "lecture"
+   ],
+   "instructors": [
+    "Leo Porter"
+   ],
+   "is_topic_course": false,
+   "section_family": null,
+   "units_display": "4 units",
+   "course_fees": [],
+   "prerequisites": [],
+   "restrictions": [
+    "Limited to class level: Freshman, Junior, Sophomore, Senior"
+   ],
+   "sections": [
     {
-      "term_code": "WI27",
-      "subject_code": "GPPS",
-      "course_code": "428",
-      "module_code": "GPPS-428",
-      "module_name": "Energy Systems & Policy",
-      "course_title": "Energy Systems & Policy",
-      "units_display": "4",
-      "instructors": ["Michael Davidson"],
-      "sections": [
-        {
-          "section_id": "E 00012345",
-          "section_ref": "GPPS428-A00",
-          "section_code": "A00",
-          "instruction_type_name": "Lecture",
-          "capacity": 60,
-          "enrolled": 55,
-          "seats_available": 5,
-          "waitlist_enrolled": 0,
-          "instructors": ["Michael Davidson"],
-          "meetings": [
-            { "meeting_kind": "class", "day_code": "T", "start_time_display": "9:30a", "end_time_display": "10:50a", "room_code": "RBC 3203", "is_remote": false, "is_tba": false },
-            { "meeting_kind": "class", "day_code": "R", "start_time_display": "9:30a", "end_time_display": "10:50a", "room_code": "RBC 3203", "is_remote": false, "is_tba": false },
-            { "meeting_kind": "final", "day_code": null, "specific_date": "2027-03-16", "start_time_display": "8:00a", "end_time_display": "10:59a", "room_code": "RBC 3203", "is_remote": false, "is_tba": false }
-          ]
-        },
-        {
-          "section_id": "E 00012346",
-          "section_ref": "GPPS428-A01",
-          "section_code": "A01",
-          "instruction_type_name": "Discussion",
-          "capacity": 30,
-          "enrolled": 30,
-          "seats_available": 0,
-          "waitlist_enrolled": 3,
-          "instructors": [],
-          "meetings": [
-            { "meeting_kind": "class", "day_code": "F", "start_time_display": "11:00a", "end_time_display": "11:50a", "room_code": "RBC 1301", "is_remote": false, "is_tba": false }
-          ]
-        }
-      ]
+     "section_id": "E 00000958",
+     "section_ref": "FA26:E 00000958",
+     "section_code": "001-000-LE",
+     "instruction_type_name": "lecture",
+     "event_package_ids": [
+      "154302",
+      "154303",
+      "154304",
+      "154305",
+      "154306",
+      "154307",
+      "154308",
+      "154309",
+      "154310"
+     ],
+     "capacity": 362,
+     "enrolled": 244,
+     "seats_available": 118,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "R",
+       "day_name": "Thursday",
+       "specific_date": null,
+       "start_minutes": 660,
+       "end_minutes": 740,
+       "start_time_display": "11:00am",
+       "end_time_display": "12:20pm",
+       "is_remote": false,
+       "is_tba": false
+      },
+      {
+       "meeting_kind": "class",
+       "day_code": "T",
+       "day_name": "Tuesday",
+       "specific_date": null,
+       "start_minutes": 660,
+       "end_minutes": 740,
+       "start_time_display": "11:00am",
+       "end_time_display": "12:20pm",
+       "is_remote": false,
+       "is_tba": false
+      },
+      {
+       "meeting_kind": "final",
+       "day_code": "W",
+       "day_name": "Wednesday",
+       "specific_date": "2026-12-09",
+       "start_minutes": 690,
+       "end_minutes": 869,
+       "start_time_display": "11:30am",
+       "end_time_display": "2:29pm",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
     },
     {
-      "term_code": "WI27",
-      "subject_code": "CSE",
-      "course_code": "008A",
-      "module_name": "Introduction to Programming",
-      "course_title": "Introduction to Programming <I>",
-      "instructors": ["Pat Davidsonn", "Leo Porter"],
-      "sections": [
-        {
-          "section_id": "E 00020001",
-          "section_ref": "CSE8A-A00",
-          "section_code": "A00",
-          "instruction_type_name": "Lecture",
-          "capacity": 200,
-          "seats_available": 10,
-          "instructors": ["Leo Porter"],
-          "meetings": []
-        },
-        {
-          "section_id": "E 00020002",
-          "section_ref": "CSE8A-B00",
-          "section_code": "B00",
-          "instruction_type_name": "Lecture",
-          "capacity": 200,
-          "seats_available": 0,
-          "instructors": ["Pat Davidsonn"],
-          "meetings": [{ "meeting_kind": "class", "is_tba": true, "is_remote": false }]
-        }
-      ]
+     "section_id": "E 00004069",
+     "section_ref": "FA26:E 00004069",
+     "section_code": "001-001-DI",
+     "instruction_type_name": "discussion",
+     "event_package_ids": [
+      "154302",
+      "154303",
+      "154304",
+      "154305",
+      "154306",
+      "154307",
+      "154308",
+      "154309",
+      "154310"
+     ],
+     "capacity": 362,
+     "enrolled": 244,
+     "seats_available": 118,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "F",
+       "day_name": "Friday",
+       "specific_date": null,
+       "start_minutes": 480,
+       "end_minutes": 530,
+       "start_time_display": "8:00am",
+       "end_time_display": "8:50am",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "E 00002703",
+     "section_ref": "FA26:E 00002703",
+     "section_code": "001-001-LA",
+     "instruction_type_name": "lab",
+     "event_package_ids": [
+      "153756",
+      "154302"
+     ],
+     "capacity": 40,
+     "enrolled": 27,
+     "seats_available": 13,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "W",
+       "day_name": "Wednesday",
+       "specific_date": null,
+       "start_minutes": 540,
+       "end_minutes": 590,
+       "start_time_display": "9:00am",
+       "end_time_display": "9:50am",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "E 00002704",
+     "section_ref": "FA26:E 00002704",
+     "section_code": "001-002-LA",
+     "instruction_type_name": "lab",
+     "event_package_ids": [
+      "153757",
+      "154303"
+     ],
+     "capacity": 40,
+     "enrolled": 28,
+     "seats_available": 12,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "W",
+       "day_name": "Wednesday",
+       "specific_date": null,
+       "start_minutes": 600,
+       "end_minutes": 650,
+       "start_time_display": "10:00am",
+       "end_time_display": "10:50am",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "E 00002705",
+     "section_ref": "FA26:E 00002705",
+     "section_code": "001-003-LA",
+     "instruction_type_name": "lab",
+     "event_package_ids": [
+      "153758",
+      "154304"
+     ],
+     "capacity": 41,
+     "enrolled": 32,
+     "seats_available": 9,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "W",
+       "day_name": "Wednesday",
+       "specific_date": null,
+       "start_minutes": 660,
+       "end_minutes": 710,
+       "start_time_display": "11:00am",
+       "end_time_display": "11:50am",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "E 00002706",
+     "section_ref": "FA26:E 00002706",
+     "section_code": "001-004-LA",
+     "instruction_type_name": "lab",
+     "event_package_ids": [
+      "154305"
+     ],
+     "capacity": 40,
+     "enrolled": 27,
+     "seats_available": 13,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "W",
+       "day_name": "Wednesday",
+       "specific_date": null,
+       "start_minutes": 720,
+       "end_minutes": 770,
+       "start_time_display": "12:00pm",
+       "end_time_display": "12:50pm",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "E 00002707",
+     "section_ref": "FA26:E 00002707",
+     "section_code": "001-005-LA",
+     "instruction_type_name": "lab",
+     "event_package_ids": [
+      "152590",
+      "152591",
+      "153763",
+      "154306"
+     ],
+     "capacity": 41,
+     "enrolled": 36,
+     "seats_available": 5,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "W",
+       "day_name": "Wednesday",
+       "specific_date": null,
+       "start_minutes": 780,
+       "end_minutes": 830,
+       "start_time_display": "1:00pm",
+       "end_time_display": "1:50pm",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "E 00002708",
+     "section_ref": "FA26:E 00002708",
+     "section_code": "001-006-LA",
+     "instruction_type_name": "lab",
+     "event_package_ids": [
+      "153764",
+      "154307"
+     ],
+     "capacity": 40,
+     "enrolled": 25,
+     "seats_available": 15,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "W",
+       "day_name": "Wednesday",
+       "specific_date": null,
+       "start_minutes": 840,
+       "end_minutes": 890,
+       "start_time_display": "2:00pm",
+       "end_time_display": "2:50pm",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "E 00002709",
+     "section_ref": "FA26:E 00002709",
+     "section_code": "001-007-LA",
+     "instruction_type_name": "lab",
+     "event_package_ids": [
+      "153765",
+      "154308"
+     ],
+     "capacity": 40,
+     "enrolled": 22,
+     "seats_available": 18,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "W",
+       "day_name": "Wednesday",
+       "specific_date": null,
+       "start_minutes": 900,
+       "end_minutes": 950,
+       "start_time_display": "3:00pm",
+       "end_time_display": "3:50pm",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "E 00002710",
+     "section_ref": "FA26:E 00002710",
+     "section_code": "001-008-LA",
+     "instruction_type_name": "lab",
+     "event_package_ids": [
+      "153766",
+      "154309"
+     ],
+     "capacity": 40,
+     "enrolled": 27,
+     "seats_available": 13,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "W",
+       "day_name": "Wednesday",
+       "specific_date": null,
+       "start_minutes": 960,
+       "end_minutes": 1010,
+       "start_time_display": "4:00pm",
+       "end_time_display": "4:50pm",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "E 00002711",
+     "section_ref": "FA26:E 00002711",
+     "section_code": "001-009-LA",
+     "instruction_type_name": "lab",
+     "event_package_ids": [
+      "153767",
+      "154310"
+     ],
+     "capacity": 40,
+     "enrolled": 23,
+     "seats_available": 17,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": "W",
+       "day_name": "Wednesday",
+       "specific_date": null,
+       "start_minutes": 1020,
+       "end_minutes": 1070,
+       "start_time_display": "5:00pm",
+       "end_time_display": "5:50pm",
+       "is_remote": false,
+       "is_tba": false
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
     }
-  ]
+   ]
+  },
+  {
+   "term_code": "FA26",
+   "subject_code": "CSE",
+   "course_code": "293",
+   "module_code": "CSE-293",
+   "module_name": "Spec Proj/Computer Sci & Engin",
+   "course_title": null,
+   "subject_name": "Computer Science and Engineering",
+   "academic_level": "GR",
+   "section_count": 73,
+   "matching_section_count": 1,
+   "complete_package_count": 73,
+   "open_package_count": 73,
+   "waitlist_package_count": 0,
+   "open_section_count": 1,
+   "open_seat_count": 0,
+   "waitlist_available_count": 0,
+   "instruction_types": [
+    "in"
+   ],
+   "instructors": [
+    "Aaron Shalev",
+    "Adalbert Gerald Soosai Raj",
+    "Alex Orailoglu",
+    "Alex Snoeren",
+    "Alin Deutsch",
+    "Andrew Kahng",
+    "Arun Kumar",
+    "Babak Salimi",
+    "Biwei Huang",
+    "Chung Cheng",
+    "Daniel Kane",
+    "Daniele Micciancio",
+    "David Kriegman",
+    "Dean Tullsen",
+    "Debashis Sahoo",
+    "Deepak Kumar",
+    "Deian Stefan",
+    "Earlence Fernandes",
+    "Falko Kuester",
+    "Garrison Cottrell",
+    "Geoff Voelker",
+    "George Porter",
+    "Hadi Esmaeilzadeh",
+    "Haijun Xia",
+    "Hao Zhang",
+    "Henrik Christensen",
+    "Jingbo Shang",
+    "Jishen Zhao",
+    "Joe Politz",
+    "Julian McAuley",
+    "Kimberly Claffy",
+    "Kristen Vaccaro",
+    "Laurel Riek",
+    "Lawrence Saul",
+    "Leo Porter",
+    "Lianhui Qin",
+    "Loris D'Antoni",
+    "Manmohan Chandraker",
+    "Marc Niethammer",
+    "Meenakshi Khosla",
+    "Melissa Gymrek",
+    "Michael Coblenz",
+    "Michael Yip",
+    "Mihir Bellare",
+    "Nadia Heninger",
+    "Nadia Polikarpova",
+    "Nadir Weibel",
+    "Patrick Pannuto",
+    "Pengtao Xie",
+    "Qipeng Liu",
+    "Rajesh Gupta",
+    "Ramamohan Paturi",
+    "Ranjit Jhala",
+    "Ravi Ramamoorthi",
+    "Rob Knight",
+    "Rose Yu",
+    "Russell Impagliazzo",
+    "Shachar Lovett",
+    "Sicun Gao",
+    "Sorin Lerner",
+    "Stefan Savage",
+    "Steven Dow",
+    "Steven Swanson",
+    "Tajana Rosing",
+    "Tauhidur Rahman",
+    "Taylor Berg-Kirkpatrick",
+    "Vineet Bafna",
+    "William Griswold",
+    "Xiaolong Wang",
+    "Yoav Freund",
+    "Yuanyuan Zhou",
+    "Yufei Ding",
+    "Zhuowen Tu"
+   ],
+   "is_topic_course": false,
+   "section_family": null,
+   "units_display": "1 unit",
+   "course_fees": [],
+   "prerequisites": [],
+   "restrictions": [
+    "Limited to academic level: Graduate",
+    "Limited to major: Computer Science, Computer Science (Comput Engin), CSE (Advanced Manufacturing), Comp Sci w/Spec Bioinformatics, Computer Sci & Cognitive Sci, CSE w/Spec Computational Sci"
+   ],
+   "sections": [
+    {
+     "section_id": "EL00002982",
+     "section_ref": "FA26:EL00002982",
+     "section_code": "033-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 9999,
+     "enrolled": 0,
+     "seats_available": 9999,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Leo Porter"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00002950",
+     "section_ref": "FA26:EL00002950",
+     "section_code": "001-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 9999,
+     "enrolled": 0,
+     "seats_available": 9999,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Vineet Bafna"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00002952",
+     "section_ref": "FA26:EL00002952",
+     "section_code": "002-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 9999,
+     "enrolled": 0,
+     "seats_available": 9999,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Mihir Bellare"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    }
+   ]
+  },
+  {
+   "term_code": "FA26",
+   "subject_code": "CSS",
+   "course_code": "296",
+   "module_code": "CSS-296",
+   "module_name": "Research Comp Social Science",
+   "course_title": null,
+   "subject_name": "Computational Social Science",
+   "academic_level": "GR",
+   "section_count": 8,
+   "matching_section_count": 1,
+   "complete_package_count": 8,
+   "open_package_count": 8,
+   "waitlist_package_count": 0,
+   "open_section_count": 1,
+   "open_seat_count": 0,
+   "waitlist_available_count": 0,
+   "instruction_types": [
+    "in"
+   ],
+   "instructors": [
+    "Andrew deWaard",
+    "Benjamin Bergen",
+    "Christoforos Mamas",
+    "Lilly Irani",
+    "Martin Zettersten",
+    "Michael Davidson",
+    "Umberto Mignozzetti",
+    "Will Styler"
+   ],
+   "is_topic_course": false,
+   "section_family": null,
+   "units_display": "2 units",
+   "course_fees": [],
+   "prerequisites": [],
+   "restrictions": [
+    "Limited to academic level: Graduate"
+   ],
+   "sections": [
+    {
+     "section_id": "EL00007692",
+     "section_ref": "FA26:EL00007692",
+     "section_code": "001-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 99,
+     "enrolled": 1,
+     "seats_available": 98,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Andrew deWaard"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00007655",
+     "section_ref": "FA26:EL00007655",
+     "section_code": "002-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 99,
+     "enrolled": 3,
+     "seats_available": 96,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Benjamin Bergen"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00007693",
+     "section_ref": "FA26:EL00007693",
+     "section_code": "003-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 99,
+     "enrolled": 1,
+     "seats_available": 98,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Christoforos Mamas"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00007656",
+     "section_ref": "FA26:EL00007656",
+     "section_code": "004-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 99,
+     "enrolled": 1,
+     "seats_available": 98,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Lilly Irani"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00007657",
+     "section_ref": "FA26:EL00007657",
+     "section_code": "005-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 99,
+     "enrolled": 1,
+     "seats_available": 98,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Martin Zettersten"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00007694",
+     "section_ref": "FA26:EL00007694",
+     "section_code": "006-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 99,
+     "enrolled": 2,
+     "seats_available": 97,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Michael Davidson"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00007664",
+     "section_ref": "FA26:EL00007664",
+     "section_code": "007-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 99,
+     "enrolled": 2,
+     "seats_available": 97,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Umberto Mignozzetti"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00007704",
+     "section_ref": "FA26:EL00007704",
+     "section_code": "008-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 99,
+     "enrolled": 3,
+     "seats_available": 96,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Will Styler"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    }
+   ]
+  },
+  {
+   "term_code": "FA26",
+   "subject_code": "MAE",
+   "course_code": "299",
+   "module_code": "MAE-299",
+   "module_name": "Graduate Research",
+   "course_title": null,
+   "subject_name": "Mechanical and Aerospace Engineering",
+   "academic_level": "GR",
+   "section_count": 64,
+   "matching_section_count": 1,
+   "complete_package_count": 1,
+   "open_package_count": 1,
+   "waitlist_package_count": 0,
+   "open_section_count": 1,
+   "open_seat_count": 0,
+   "waitlist_available_count": 0,
+   "instruction_types": [
+    "in"
+   ],
+   "instructors": [
+    "Aaron Rosengren",
+    "Abhishek Saha",
+    "Alessandro Marinoni",
+    "Alexey Arefiev",
+    "Andrew Lucas",
+    "Antonio Sanchez",
+    "Boris Kramer",
+    "Carlos Coimbra",
+    "Christopher Holland",
+    "Claire Scholtes Acevedo",
+    "David Saintillan",
+    "Dmitriy Orlov",
+    "Edward Campbell",
+    "Eugene Pawlak",
+    "Farhat Beg",
+    "Frank Talke",
+    "George Tynan",
+    "Haiwen Luan",
+    "Huihui Qi",
+    "James Friend",
+    "Jan Kleissl",
+    "Janet Becker",
+    "Javier Garay",
+    "John Hwang",
+    "John Kosmatka",
+    "Jorge Cortes",
+    "Juan Carlos Del Alamo",
+    "Kalyanasundaram Seshadri",
+    "Keiko Nomura",
+    "Lisa Poulikakos",
+    "Mamadou Diagne",
+    "Marc Meyers",
+    "Marko Lubarda",
+    "Maziar Ghazinejad",
+    "Michael Davidson",
+    "Michael Frazier",
+    "Michael Tolley",
+    "Michael Yip",
+    "Miroslav Krstic",
+    "Nathan Delson",
+    "Nicholas Gravish",
+    "Oliver Schmidt",
+    "Olivia Graeve",
+    "Padmini Rangamani",
+    "Patricia Hidalgo-Gonzalez",
+    "Penghui Cao",
+    "Prabhakar Bandaru",
+    "Ratneshwar Lal",
+    "Raymond De Callafon",
+    "Renkun Chen",
+    "Robert Bitmead",
+    "Sergei Krasheninnikov",
+    "Shengqiang Cai",
+    "Sonia Martinez Diaz",
+    "Stefan Llewellyn Smith",
+    "Stephanie Lindsey",
+    "Sutanu Sarkar",
+    "Sylvia Herbert",
+    "Tania Morimoto",
+    "Thomas Bewley",
+    "Vitali Nesterenko",
+    "William Mceneaney",
+    "Xuanting Hao"
+   ],
+   "is_topic_course": false,
+   "section_family": null,
+   "units_display": "1 unit",
+   "course_fees": [],
+   "prerequisites": [],
+   "restrictions": [
+    "Limited to academic level: Graduate",
+    "Limited to major: Chemical Engineering, Engin Scis (Aerospace Engin), Engin Scis (Applied Mechanics), Engin Scis (Applied Ocean Sci), Engin Scis (Engineerng Physics), Engin Scis (Mechanical Engin), Engin Scis (Comp Engi and Sci), Engin Scis (Pwr and Enrgy Sys), Engin Scis (Cntrl and Mechatr), Engin Scis (Bimch and Biomd), Energy & Climate, Eng Sci w/Spec Multi-Scale Bio, EngSci(Mech&AeroEng-JtDocSDSU), Oceanography"
+   ],
+   "sections": [
+    {
+     "section_id": "EL00001816",
+     "section_ref": "FA26:EL00001816",
+     "section_code": "012-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 9999,
+     "enrolled": 4,
+     "seats_available": 9995,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Michael Davidson"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00001805",
+     "section_ref": "FA26:EL00001805",
+     "section_code": "001-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 9999,
+     "enrolled": 7,
+     "seats_available": 9992,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Alexey Arefiev"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    },
+    {
+     "section_id": "EL00001806",
+     "section_ref": "FA26:EL00001806",
+     "section_code": "002-000-IN",
+     "instruction_type_name": "in",
+     "event_package_ids": [],
+     "capacity": 9999,
+     "enrolled": 4,
+     "seats_available": 9995,
+     "waitlist_capacity": null,
+     "waitlist_enrolled": 0,
+     "waitlist_available": null,
+     "status": "AC",
+     "instructors": [
+      "Prabhakar Bandaru"
+     ],
+     "meetings": [
+      {
+       "meeting_kind": "class",
+       "day_code": null,
+       "day_name": null,
+       "specific_date": null,
+       "start_minutes": null,
+       "end_minutes": null,
+       "start_time_display": "tba",
+       "end_time_display": "tba",
+       "is_remote": false,
+       "is_tba": true
+      }
+     ],
+     "section_text": [],
+     "course_fees": []
+    }
+   ]
+  }
+ ]
 }

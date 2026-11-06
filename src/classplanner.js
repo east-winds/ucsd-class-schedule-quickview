@@ -2,23 +2,22 @@
 // serves upcoming terms (FA26 onward) that the legacy act.ucsd.edu Schedule of
 // Classes no longer returns.
 //
-// Class Planner is a JSON API. Two search routes have been seen in the wild:
-//   /api/v1/public/catalog/courses/search   (unauthenticated)
-//   /api/v1/catalog/courses/search          (older; may now need sign-in)
-// We try the public route first and fall back to the older one.
+// Only the /api/v1/public/... routes work without signing in. The older
+// /api/v1/catalog/... and /api/v1/planner/... routes answer 401.
+//   POST /api/v1/public/catalog/courses/search   paginated course search
+//   GET  /api/v1/public/catalog/filters?term_code=FA26   filter values, incl. every instructor name
+// A term Class Planner hasn't published yet answers 404 with a "detail" message.
 
 export const CLASS_PLANNER_ORIGIN = 'https://classplanner.apps.ucsd.edu';
-
-const SEARCH_URLS = [
-  `${CLASS_PLANNER_ORIGIN}/api/v1/public/catalog/courses/search`,
-  `${CLASS_PLANNER_ORIGIN}/api/v1/catalog/courses/search`,
-];
+const API = `${CLASS_PLANNER_ORIGIN}/api/v1/public/catalog`;
 
 // Server-enforced maximum; a larger limit is rejected with 422.
 const PAGE_LIMIT = 48;
 // Stop paging after this many pages so a broad query can't blow through the
 // Worker's subrequest budget.
 const MAX_PAGES = 5;
+// Most instructor names one professor search may match (e.g. "Smith" alone).
+const MAX_INSTRUCTOR_NAMES = 20;
 
 const USER_AGENT = 'ucsd-class-schedule-quickview (https://github.com/east-winds/ucsd-class-schedule-quickview)';
 
@@ -40,37 +39,34 @@ export function usesClassPlanner(term) {
   return ord !== null && ord >= termOrdinal(FIRST_CLASS_PLANNER_TERM);
 }
 
-export function createClassPlannerClient({ fetchImpl = fetch } = {}) {
-  let workingUrl = null; // the search route that answered last
+/** Thrown when Class Planner hasn't published a term yet. */
+export class TermNotAvailableError extends Error {}
 
-  async function call(init) {
-    const order = workingUrl ? [workingUrl, ...SEARCH_URLS.filter((u) => u !== workingUrl)] : SEARCH_URLS;
-    let lastError;
-    for (const url of order) {
-      let response;
-      try {
-        response = await fetchImpl(url, {
-          ...init,
-          headers: { accept: 'application/json', 'user-agent': USER_AGENT, ...(init?.headers || {}) },
-          redirect: 'manual',
-        });
-      } catch (err) {
-        lastError = new Error(`Class Planner request failed: ${err instanceof Error ? err.message : err}`);
-        continue;
-      }
-      if (response.ok) {
-        workingUrl = url;
-        return response.json();
-      }
-      lastError = new Error(`Class Planner returned HTTP ${response.status}`);
-      lastError.status = response.status;
-      // Try the other route layout on auth/missing-route errors; anything else
-      // (422 bad request, 5xx) is a real answer from the right endpoint.
-      if (![401, 403, 404, 405].includes(response.status) && !(response.status >= 300 && response.status < 400)) {
-        throw lastError;
-      }
+export function createClassPlannerClient({ fetchImpl = fetch } = {}) {
+  async function call(url, init = {}) {
+    let response;
+    try {
+      response = await fetchImpl(url, {
+        ...init,
+        headers: { accept: 'application/json', 'user-agent': USER_AGENT, ...(init.headers || {}) },
+        redirect: 'manual',
+      });
+    } catch (err) {
+      throw new Error(`Class Planner request failed: ${err instanceof Error ? err.message : err}`);
     }
-    throw lastError;
+    if (response.ok) return response.json();
+
+    let detail = '';
+    try {
+      const body = await response.json();
+      if (typeof body?.detail === 'string') detail = body.detail;
+    } catch {
+      // not JSON
+    }
+    if (response.status === 404 && /term/i.test(detail)) throw new TermNotAvailableError(detail);
+    const err = new Error(`Class Planner returned HTTP ${response.status}${detail ? `: ${detail}` : ''}`);
+    err.status = response.status;
+    throw err;
   }
 
   async function searchAll(body) {
@@ -78,7 +74,7 @@ export function createClassPlannerClient({ fetchImpl = fetch } = {}) {
     let offset = 0;
     let total = Infinity;
     for (let page = 0; page < MAX_PAGES && offset < total; page += 1) {
-      const result = await call({
+      const result = await call(`${API}/courses/search`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ ...body, offset, limit: PAGE_LIMIT }),
@@ -92,12 +88,20 @@ export function createClassPlannerClient({ fetchImpl = fetch } = {}) {
     return { courses, truncated: courses.length < total };
   }
 
+  /** Every instructor name Class Planner lists for the term ("Michael Davidson"). */
+  async function instructorNames(term) {
+    const filters = await call(`${API}/filters?term_code=${encodeURIComponent(term)}`);
+    const list = Array.isArray(filters?.instructors) ? filters.instructors : [];
+    return list.map((i) => (typeof i === 'string' ? i : i?.value)).filter(Boolean);
+  }
+
   /** Sections for a professor ("Last, First") or course ("GPPS 428") in a term. */
   async function search({ term, mode, query }) {
     if (mode === 'course') {
       const parsed = parseCourse(query);
       if (parsed) {
-        const keys = [...new Set([`${parsed.subject} ${parsed.number}`, `${parsed.subject} ${padCourseNumber(parsed.number)}`])];
+        // Class Planner keys pad the number: "CSE 008A".
+        const keys = [...new Set([`${parsed.subject} ${padCourseNumber(parsed.number)}`, `${parsed.subject} ${parsed.number}`])];
         const byKey = await searchAll(searchBody(term, { course_key: keys }));
         const matched = byKey.courses.filter((c) => courseMatches(c, parsed));
         if (matched.length) return { ...byKey, courses: matched };
@@ -110,19 +114,17 @@ export function createClassPlannerClient({ fetchImpl = fetch } = {}) {
       };
     }
 
+    // The instructor filter only takes exact display names, and free-text
+    // search doesn't cover instructors, so look the name up in the term's
+    // instructor list first.
     const name = parseInstructor(query);
-    // The instructor filter takes Class Planner's display names ("Michael Davidson").
-    const attempts = [];
-    if (name.first) attempts.push(searchBody(term, { instructor: [displayName(query)] }));
-    attempts.push(searchBody(term, { q: query.split(',')[0].trim() }));
-    let truncated = false;
-    for (const body of attempts) {
-      const result = await searchAll(body);
-      truncated = truncated || result.truncated;
-      const courses = filterByInstructor(result.courses, name);
-      if (courses.length) return { courses, truncated: result.truncated };
-    }
-    return { courses: [], truncated };
+    const names = (await instructorNames(term)).filter((n) => instructorMatches(n, name));
+    if (!names.length) return { courses: [], truncated: false };
+    const result = await searchAll(searchBody(term, { instructor: names.slice(0, MAX_INSTRUCTOR_NAMES) }));
+    return {
+      courses: filterByInstructor(result.courses, name),
+      truncated: result.truncated || names.length > MAX_INSTRUCTOR_NAMES,
+    };
   }
 
   return { search };
@@ -191,14 +193,6 @@ export function parseInstructor(query) {
   const parts = q.split(/\s+/).filter(Boolean);
   if (parts.length === 1) return { last: parts[0].toLowerCase(), first: '' };
   return { last: parts[parts.length - 1].toLowerCase(), first: parts[0].toLowerCase() };
-}
-
-// "Davidson, Michael" -> "Michael Davidson" (Class Planner's display order)
-function displayName(query) {
-  const q = query.trim();
-  if (!q.includes(',')) return q;
-  const [last, ...rest] = q.split(',');
-  return `${rest.join(' ').trim()} ${last.trim()}`.trim();
 }
 
 function nameTokens(name) {

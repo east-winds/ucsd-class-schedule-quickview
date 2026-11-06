@@ -1,5 +1,5 @@
 import { extractRelevantMarkup } from './extract.js';
-import { createClassPlannerClient, usesClassPlanner } from './classplanner.js';
+import { createClassPlannerClient, TermNotAvailableError, usesClassPlanner } from './classplanner.js';
 import { classPlannerTermUrl, renderClassPlannerCourses } from './render-classplanner.js';
 
 const SEARCH_ENDPOINT = 'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFacultyResult.htm';
@@ -97,6 +97,16 @@ async function searchClassPlanner(planner, { term, mode, query }) {
       : '';
     return { term, source: 'classplanner', ok: true, status: 200, found, body: `${sourceNote}${note}${tableHtml}`, courses };
   } catch (err) {
+    if (err instanceof TermNotAvailableError) {
+      return {
+        term,
+        source: 'classplanner',
+        ok: true,
+        status: 404,
+        found: false,
+        body: '<p class="no-results">Not yet published in UCSD Class Planner.</p>',
+      };
+    }
     const message = err instanceof Error ? err.message : String(err);
     return {
       term,

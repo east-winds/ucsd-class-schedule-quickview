@@ -18,10 +18,17 @@ Example course search: https://ucsd-classes.mrdavidson.workers.dev/api/search?mo
 
 UCSD's legacy [Schedule of Classes](https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudent.htm) no longer returns terms from Fall 2026 (FA26) on. The Worker picks a source for each quarter:
 
-- **FA26 and later:** [UCSD Class Planner](https://classplanner.apps.ucsd.edu/search), through its JSON search API (`POST /api/v1/public/catalog/courses/search`, falling back to `/api/v1/catalog/courses/search`). The Worker builds the results table itself, in the same style as the legacy one, with seat and waitlist counts. Each of these quarters shows a "Source: UCSD Class Planner" link.
-- **Summer 2026 and earlier:** the legacy Schedule of Classes on act.ucsd.edu, as before.
+- **FA26 and later:** [UCSD Class Planner](https://classplanner.apps.ucsd.edu/search), through its public JSON API. The Worker builds the results table itself, in the same style as the legacy one, with seat and waitlist counts. Each of these quarters shows a "Source: UCSD Class Planner" link.
+- **Summer 2026 and earlier:** the legacy Schedule of Classes on act.ucsd.edu, as before (its newest term is SA26).
 
-Class Planner lists instructors by preferred name ("Michael Davidson", sometimes "Mike Davidson"). A professor search matches the full last name plus the first initial.
+Class Planner only publishes a term shortly before it starts. As of November 2026 it has FA26 but not WI27, so WI27 shows "Not yet published in UCSD Class Planner." until UCSD adds it. No code change is needed when that happens.
+
+Class Planner API notes (no sign-in needed for these; the non-`public` routes answer 401):
+
+- `POST /api/v1/public/catalog/courses/search` with a JSON body (`term_code`, `course_key: ["CSE 008A"]` or `instructor: ["Michael Davidson"]`, `offset`, `limit` of at most 48). Course numbers are zero-padded.
+- `GET /api/v1/public/catalog/filters?term_code=FA26` lists every instructor name for the term. A professor search matches the typed name against this list (full last name plus first initial, so "Davidson, Michael" also finds "Mike Davidson"), then searches with the exact names. The text search (`q`) doesn't cover instructor names.
+- The public API has no room numbers, so the Room column is hidden for these quarters.
+- An unpublished term answers 404 with `"This term is not available in the public Schedule of Classes."`
 
 ### What you see
 
@@ -85,7 +92,7 @@ npm test
 
 Tests run the result extractor (`src/extract.js`) against saved UCSD pages in `test/fixtures/`. If UCSD changes its page layout, save a fresh response there and update the extractor.
 
-The Class Planner client (`src/classplanner.js`) and table renderer (`src/render-classplanner.js`) are tested against `test/fixtures/classplanner-search.json`. That file is a hand-built sample in the API's shape, not a captured response; replace it with a real response when you can.
+The Class Planner client (`src/classplanner.js`) and table renderer (`src/render-classplanner.js`) are tested against `test/fixtures/classplanner-search.json` and `test/fixtures/classplanner-filters.json`, real FA26 responses captured on 2026-11-06 and trimmed. If Class Planner changes its format, save fresh responses there.
 
 ### Deploy
 
