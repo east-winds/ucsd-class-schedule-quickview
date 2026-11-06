@@ -2,6 +2,8 @@
 
 The [UCSD Schedule of Classes](https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudent.htm) is somewhat difficult to navigate. This repo allows you to quickly view UCSD course offered in current and previous X years by professor or course name.
 
+This repo focuses on historical searching: which quarters a professor taught, or a course was offered, over the past several years. To browse and plan the current or upcoming quarter, [TSS++](https://tssplusplus.vercel.app) ([source](https://github.com/alchin2/tssplusplus)) is a useful visualizer, with course search, prerequisite graphs, a schedule planner and a finals view.
+
 ## Cloud Usage
 
 A Cloudflare Workers instance allows for web-based retrieval of results.
