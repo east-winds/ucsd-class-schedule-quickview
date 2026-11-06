@@ -1,4 +1,6 @@
 import { extractRelevantMarkup } from './extract.js';
+import { createClassPlannerClient, TermNotAvailableError, usesClassPlanner } from './classplanner.js';
+import { classPlannerTermUrl, renderClassPlannerCourses } from './render-classplanner.js';
 
 const SEARCH_ENDPOINT = 'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFacultyResult.htm';
 const SEARCH_PAGE_REFERER = 'https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesFaculty.htm';
@@ -45,33 +47,15 @@ async function handleSearch(url) {
   }
 
   const terms = getTerms(years);
+  const planner = createClassPlannerClient();
+
   const results = [];
-
   for (const term of terms) {
-    const body = buildFormBody({ term, mode, query: q });
-    const response = await fetch(SEARCH_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        origin: 'https://act.ucsd.edu',
-        referer: SEARCH_PAGE_REFERER,
-        'user-agent': 'Mozilla/5.0',
-      },
-      body,
-      redirect: 'follow',
-    });
-
-    const responseHtml = await response.text();
-    const { found, html: resultHtml } = response.ok
-      ? extractRelevantMarkup(responseHtml)
-      : { found: false, html: `<p class="no-results">Upstream request failed with status ${response.status}.</p>` };
-    results.push({
-      term,
-      ok: response.ok,
-      status: response.status,
-      found,
-      body: resultHtml,
-    });
+    results.push(
+      usesClassPlanner(term)
+        ? await searchClassPlanner(planner, { term, mode, query: q })
+        : await searchLegacy({ term, mode, query: q }),
+    );
   }
 
   if (format === 'json') {
@@ -79,6 +63,60 @@ async function handleSearch(url) {
   }
 
   return html(renderResultsPage({ mode, q, years, terms, results }));
+}
+
+// Terms through Summer 2026: the legacy Schedule of Classes on act.ucsd.edu.
+async function searchLegacy({ term, mode, query }) {
+  const response = await fetch(SEARCH_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      origin: 'https://act.ucsd.edu',
+      referer: SEARCH_PAGE_REFERER,
+      'user-agent': 'Mozilla/5.0',
+    },
+    body: buildFormBody({ term, mode, query }),
+    redirect: 'follow',
+  });
+
+  const responseHtml = await response.text();
+  const { found, html: resultHtml } = response.ok
+    ? extractRelevantMarkup(responseHtml)
+    : { found: false, html: `<p class="no-results">Upstream request failed with status ${response.status}.</p>` };
+  return { term, source: 'act.ucsd.edu', ok: response.ok, status: response.status, found, body: resultHtml };
+}
+
+// Fall 2026 onward: UCSD Class Planner.
+async function searchClassPlanner(planner, { term, mode, query }) {
+  const sourceNote = `<p class="source muted">Source: <a href="${escapeHtml(classPlannerTermUrl(term))}">UCSD Class Planner</a></p>`;
+  try {
+    const { courses, truncated } = await planner.search({ term, mode, query });
+    const { found, html: tableHtml } = renderClassPlannerCourses(courses);
+    const note = truncated
+      ? '<p class="muted">Showing the first matches only; narrow the search to see more.</p>'
+      : '';
+    return { term, source: 'classplanner', ok: true, status: 200, found, body: `${sourceNote}${note}${tableHtml}`, courses };
+  } catch (err) {
+    if (err instanceof TermNotAvailableError) {
+      return {
+        term,
+        source: 'classplanner',
+        ok: true,
+        status: 404,
+        found: false,
+        body: '<p class="no-results">Not yet published in UCSD Class Planner.</p>',
+      };
+    }
+    const message = err instanceof Error ? err.message : String(err);
+    return {
+      term,
+      source: 'classplanner',
+      ok: false,
+      status: err?.status ?? 502,
+      found: false,
+      body: `${sourceNote}<p class="no-results">Could not read UCSD Class Planner (${escapeHtml(message)}).</p>`,
+    };
+  }
 }
 
 function buildFormBody({ term, mode, query }) {
@@ -284,6 +322,7 @@ function renderResultsPage({ mode, q, years, terms, results }) {
     table.tbrdr h2 { font-size: 1.05rem; margin: 0.25rem 0; }
     .boldtxt, .bold_text { font-weight: 600; }
     .icon.info { display: none; }
+    .source { margin: 0 0 0.5rem; font-size: 0.9rem; }
   </style>
 </head>
 <body>

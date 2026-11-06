@@ -1,0 +1,71 @@
+{
+ "_note": "Captured from GET https://classplanner.apps.ucsd.edu/api/v1/public/catalog/filters?term_code=FA26 on 2026-11-06; only the instructors list, trimmed to a few names.",
+ "term_code": "FA26",
+ "instructors": [
+  {
+   "value": "Alison Smith",
+   "label": "Alison Smith",
+   "count": 3
+  },
+  {
+   "value": "Andrew Whitworth-Smith",
+   "label": "Andrew Whitworth-Smith",
+   "count": 1
+  },
+  {
+   "value": "Douglas Smith",
+   "label": "Douglas Smith",
+   "count": 2
+  },
+  {
+   "value": "George Porter",
+   "label": "George Porter",
+   "count": 3
+  },
+  {
+   "value": "Haydee Smith",
+   "label": "Haydee Smith",
+   "count": 1
+  },
+  {
+   "value": "Jennifer Smith",
+   "label": "Jennifer Smith",
+   "count": 1
+  },
+  {
+   "value": "Lauryn Smith",
+   "label": "Lauryn Smith",
+   "count": 1
+  },
+  {
+   "value": "Leo Porter",
+   "label": "Leo Porter",
+   "count": 6
+  },
+  {
+   "value": "Lisa Porter",
+   "label": "Lisa Porter",
+   "count": 3
+  },
+  {
+   "value": "Michael Davidson",
+   "label": "Michael Davidson",
+   "count": 2
+  },
+  {
+   "value": "Monique Smith",
+   "label": "Monique Smith",
+   "count": 3
+  },
+  {
+   "value": "Pamela Smith",
+   "label": "Pamela Smith",
+   "count": 1
+  },
+  {
+   "value": "Stefan Llewellyn Smith",
+   "label": "Stefan Llewellyn Smith",
+   "count": 3
+  }
+ ]
+}
