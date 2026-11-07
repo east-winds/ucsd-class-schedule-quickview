@@ -1,4 +1,4 @@
-# UCSD Class Schedule Quickview
+# UCSD Class Schedule Wayback
 
 The [UCSD Schedule of Classes](https://act.ucsd.edu/scheduleOfClasses/scheduleOfClassesStudent.htm) is somewhat difficult to navigate. This repo allows you to quickly view UCSD course offered in current and previous X years by professor or course name.
 
@@ -34,7 +34,7 @@ Class Planner API notes (no sign-in needed for these; the non-`public` routes an
 
 The site uses a white-on-black design.
 
-- **Search page:** a single form. Enter a professor (`Last, First`) or a course (`GPPS 428`), choose Professor or Course, and set how many years back to search. Example links and a link to this repository are underneath.
+- **Search page:** a short intro, then three labeled fields: **Name** (a professor as `Last, First`, or a course like `GPPS 428`), **Search by:** (Professor or Course), and **Number of years to search** (with a note that a large number may take some time). Example links and a link to this repository are underneath.
 - **Results page:** one section per quarter, newest first, with a "Found in N of M quarters" summary at the top.
   - A quarter with classes shows only UCSD's results table: course, section, meeting type, days, time, room, instructor and seats. UCSD's "Your search was" box, navigation bars and site footer are removed.
   - A quarter with no classes shows only "No results found." in gray, so it's easy to skip past.

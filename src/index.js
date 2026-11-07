@@ -243,7 +243,7 @@ function renderHomePage(url) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UCSD Class Schedule Quickview</title>
+  <title>UCSD Class Schedule Wayback</title>
   <style>
     :root { color-scheme: dark; --bg: #000; --fg: #fff; --muted: #a3a3a3; --line: #333; --panel: #111; --panel-2: #1a1a1a; --link: #8ab4ff; --link-visited: #c4a1ff; }
     html, body { background: var(--bg); color: var(--fg); }
@@ -257,24 +257,39 @@ function renderHomePage(url) {
     input:focus, select:focus, button:focus-visible { outline: 2px solid var(--fg); outline-offset: 1px; }
     button { background: var(--fg); color: var(--bg); border: 1px solid var(--fg); font-weight: 600; cursor: pointer; }
     button:hover { background: #d4d4d4; }
-    .row { display: grid; grid-template-columns: 1fr 180px 160px; gap: 0.75rem; }
-    @media (max-width: 700px) { .row { grid-template-columns: 1fr; } }
+    .field { display: grid; gap: 0.3rem; max-width: 420px; }
+    .field label { font-weight: 600; }
+    .field .hint { font-size: 0.9rem; margin: 0; }
+    .intro { max-width: 680px; }
+    a { overflow-wrap: anywhere; }
     .muted { color: var(--muted); }
     code { background: var(--panel-2); color: var(--fg); padding: 0.1rem 0.3rem; border-radius: 4px; }
     .site-footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: 0.9rem; }
   </style>
 </head>
 <body>
-  <h1>UCSD Class Schedule Quickview</h1>
-  <p>Search recent UCSD class offerings by professor or course name.</p>
+  <h1>UCSD Class Schedule Wayback</h1>
+  <div class="intro">
+    <p>See when UCSD classes were offered, quarter by quarter. Search for a professor to see everything they taught, or a course to see who taught it and when.</p>
+    <p class="muted">Past quarters come from UCSD's Schedule of Classes. Fall 2026 and later come from UCSD Class Planner, once UCSD publishes them.</p>
+  </div>
   <form action="/api/search" method="get">
-    <div class="row">
-      <input name="q" placeholder="Davidson, Michael or GPPS 428" required />
-      <select name="mode">
+    <div class="field">
+      <label for="q">Name</label>
+      <input id="q" name="q" placeholder="Davidson, Michael or GPPS 428" required />
+      <p class="hint muted">A professor as <code>Last, First</code>, or a course as <code>GPPS 428</code>.</p>
+    </div>
+    <div class="field">
+      <label for="mode">Search by:</label>
+      <select id="mode" name="mode">
         <option value="prof">Professor</option>
         <option value="course">Course</option>
       </select>
-      <input name="years" type="number" min="0" max="10" value="3" />
+    </div>
+    <div class="field">
+      <label for="years">Number of years to search</label>
+      <input id="years" name="years" type="number" min="0" max="10" value="3" />
+      <p class="hint muted">A large number of years may take some time to return results.</p>
     </div>
     <div>
       <button type="submit">Search</button>
@@ -300,7 +315,7 @@ function renderResultsPage({ mode, q, years, terms, results }) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UCSD Quickview Results</title>
+  <title>UCSD Class Schedule Wayback: Results</title>
   <style>
     :root { color-scheme: dark; --bg: #000; --fg: #fff; --muted: #a3a3a3; --line: #333; --panel: #111; --panel-2: #1a1a1a; --link: #8ab4ff; --link-visited: #c4a1ff; }
     html, body { background: var(--bg); color: var(--fg); }
